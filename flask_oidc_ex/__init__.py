@@ -949,14 +949,14 @@ class OpenIDConnect(object):
             if jwks_uri is None:
                 raise Exception('No \'jwks_uri\' defined in client_secrets')
 
-            jwks = retrieve_jwks(jwks_uri)
+            jwks = retrieve_jwks(jwks_uri, self.httpFactory)
             if jwks is None:
                 raise Exception(
                     'The {jwks_uri} endpoint returned no valid JWKs' % jwks_uri)
 
-                payload = validate_token(jwks, token)
-                payload['active'] = True  # Fake introspection response
-                return payload
+            payload = validate_token(jwks, token)
+            payload['active'] = True  # Fake introspection response
+            return payload
         else:
             raise Exception(
                 'OIDC_RESOURCE_SERVER_VALIDATION_MODE must be set to either \'online\' or \'offline\'')
